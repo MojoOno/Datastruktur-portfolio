@@ -66,8 +66,6 @@ export default class DoublyLinkedList
         this.#size++;
     }
 
-    // ---------- Missing data-level methods (stubs) ----------
-
     insert(index, data)
     {
         if (index < 0 || index > this.#size)
@@ -84,32 +82,101 @@ export default class DoublyLinkedList
 
     insertAfter(index, data)
     {
-        // TODO: insert new node after node at index
+        if (index < 0 || index >= this.#size)
+            {
+                throw new RangeError(`Index out of bounds`);
+            }
+            
+        const node = this.getNode(index);
+        this.insertAfterNode(node, data);
     }
 
     insertBefore(index, data)
     {
-        // TODO: insert new node before node at index
+        if (index < 0 || index >= this.#size)
+            {
+                throw new RangeError(`Index out of bounds`);
+            }
+            
+        const node = this.getNode(index);
+        this.insertBeforeNode(node, data);
     }
 
     remove(index)
     {
-        // TODO: remove node at index and return its data
+        if (index < 0 || index >= this.#size)
+            {
+                throw new RangeError(`Index out of bounds`);
+            }
+
+        if (index === 0)
+            {
+                return this.removeFirst();
+            }
+
+        if (index === this.#size - 1)
+            {
+                return this.removeLast();
+            }
+        else
+            {
+                const node = this.getNode(index);
+                return this.removeNode(node);
+            }
     }
 
     removeFirst()
     {
-        // TODO: remove first node and return its data
+        if (this.head === null)
+            {
+                throw new RangeError(`List is empty`);
+            }
+        
+        const data = this.head.data;
+
+        if (this.#size === 1)
+            {
+                this.head = null;
+                this.tail = null;
+                this.#size--;
+                return data;
+            }
+
+        this.head = this.head.next;
+        this.head.prev = null;
+        this.#size--;
+        return data;
+        
     }
 
     removeLast()
     {
-        // TODO: remove last node and return its data
+        if (this.tail === null)
+            {
+                throw new RangeError(`List is empty`);
+            }
+
+        const data = this.tail.data;
+
+        if (this.#size === 1)
+            {
+                this.head = null;
+                this.tail = null;
+                this.#size--;
+                return data;
+            }
+
+        this.tail = this.tail.prev;
+        this.tail.next = null;
+        this.#size--;
+        return data;
     }
 
     clear()
     {
-        // TODO: remove all nodes (set head/tail to null and size to 0)
+        this.head = null;
+        this.tail = null;
+        this.#size = 0;
     }
 
     set(index, data) 
@@ -222,25 +289,36 @@ export default class DoublyLinkedList
         this.#size++;
     }
 
-    // ---------- Missing node-level methods (stubs) ----------
-
     makeLast(node)
     {
-        // TODO: move node to tail position
+        // Sad længe med denne her, men kunne ikke lige greje den oppe i hovedet
     }
 
     makeFirst(node)
     {
-        // TODO: move node to head position
+        // Ligeledes med denne her
     }
 
     removeNode(node)
     {
-        // TODO: unlink given node and return its data
+        if (!node) throw new RangeError('Node is null/undefined');
+        if (this.head === null) throw new RangeError('List is empty');
+
+        if (node === this.head) {
+            return this.removeFirst();
+        }
+        if (node === this.tail) {
+            return this.removeLast();
+        }
+
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
+        this.#size -= 1;
+        return node.data;
     }
 
     swap(nodeA, nodeB)
     {
-        // TODO: swap positions of nodeA and nodeB
+        // Mit hovede begyndte at koge over da jeg prøvede at lave denne her, så jeg måtte desværre give op
     }
 }
