@@ -70,7 +70,16 @@ export default class DoublyLinkedList
 
     insert(index, data)
     {
-        // TODO: insert new node before node at index
+        if (index < 0 || index > this.#size)
+        {
+            throw new RangeError(`index ${index} is invalid`);
+        }
+        if (index === this.#size)
+        {
+            return this.addLast(data);
+        }
+        const node = this.getNode(index);
+        this.insertBeforeNode(node, data);
     }
 
     insertAfter(index, data)
