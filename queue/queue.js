@@ -67,6 +67,10 @@ dequeue()
 
 get(index)
 {
+    if (index >= this._size)
+        {
+            throw new RangeError("Index out of bounds")
+        }
     let currentNode = this._head;
     for (let i = 0; i < index; i++)
         {
