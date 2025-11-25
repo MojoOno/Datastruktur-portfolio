@@ -6,27 +6,32 @@ class Grid {
   }
 
   rows() {
-    // TODO: return number of rows
+    return this._rows;
   }
 
   cols() {
-    // TODO: return number of cols
+    return this._cols;
   }
 
   size() {
-    // TODO: return total number of cells
+    return this._data.length;
   }
 
   indexFor({ row, col }) {
-    // TODO: translate row,col to index
+    return row * this._cols + col;
   }
 
   rowColFor(index) {
-    // TODO: translate index to {row, col}
+   const row = Math.floor(index / this._cols);
+   const col = index - row * this._cols;
+   return { row, col };
   }
 
   set({ row, col }, value) {
-    // TODO: set value at row,col
+    const index = this.indexFor({row,col});
+    this._data[index] = value;
+    return value;
+
   }
 
   get({ row, col }) {
