@@ -60,10 +60,33 @@ export default class NodeClass
 
     removeChild(child)
     {
+        if(!this.childNodes.includes(child))
+            {
+                return null;
+            }
         this.#childNodes = this.#childNodes.filter((node) => node !== child);
-        child.childNodes.parent = child.parent;
         child.parent = null;
+
+        return child;
     }
 
-    replaceChild(newChild, oldChild) {}
+    replaceChild(newChild, oldChild)
+    {
+        const index = this.#childNodes.indexOf(oldChild);
+
+        if (index === -1)
+            {
+                return null;
+            }
+
+        if (newChild === oldChild)
+            {
+                return oldChild;
+            }
+
+            this.#childNodes[index] = newChild;
+
+            oldChild.parent = null;
+            newChild.parent = this;
+    }
 }

@@ -1,5 +1,49 @@
 import assert from "assert";
 import NodeClass from "./nodeClass.js";
+// ...existing code...
+import Tree from "./tree.js";
+
+describe("Tree", function () {
+  it("should construct with a root NodeClass from a primitive value", function () {
+    const t = new Tree("root");
+    assert.ok(t.root instanceof NodeClass);
+    assert.equal(t.root.value, "root");
+  });
+
+  it("should allow getting/setting root", function () {
+    const t = new Tree("R");
+    const newRoot = new NodeClass("NR");
+    t.root = newRoot;
+    assert.equal(t.root, newRoot);
+
+    // setting with a primitive should wrap in NodeClass
+    t.root = "X";
+    assert.ok(t.root instanceof NodeClass);
+    assert.equal(t.root.value, "X");
+  });
+
+  it("addValue() should append a new child under the root", function () {
+    const t = new Tree("R");
+    t.addValue("A");
+    assert.equal(t.root.childNodes.length, 1);
+    assert.equal(t.root.childNodes[0].value, "A");
+    assert.equal(t.root.childNodes[0].parent, t.root);
+  });
+
+  it("findValue() currently returns null", function () {
+    const t = new Tree("R");
+    t.addValue("A");
+    assert.equal(t.findValue("A"), null);
+  });
+
+  it("removeValue() currently returns false", function () {
+    const t = new Tree("R");
+    t.addValue("A");
+    assert.equal(t.removeValue("A"), false);
+    // nothing should have been removed
+    assert.equal(t.root.childNodes.length, 1);
+  });
+});
 
 describe("NodeClass", function () {
   describe("Basic details", function () {
