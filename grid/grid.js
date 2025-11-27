@@ -17,7 +17,12 @@ class Grid {
     return this._data.length;
   }
 
-  indexFor({ row, col }) {
+  indexFor({ row, col }) 
+  {
+    if (row > this._rows || col > this._cols || col < 0 || row < 0)
+      {
+        return undefined;
+      }
     return row * this._cols + col;
   }
 
@@ -29,49 +34,107 @@ class Grid {
 
   set({ row, col }, value) {
     const index = this.indexFor({row,col});
+    if(index === undefined)
+      {
+        return undefined
+      }
     this._data[index] = value;
     return value;
-
   }
 
   get({ row, col }) {
-    // TODO: get value at row,col
+    const index = this.indexFor({row, col});
+
+    if(index === undefined)
+      {
+        return undefined;
+      }
+
+    return this._data[index];
   }
 
   fill(value) {
-    // TODO: fill all cells with value
+
+    for(let i = 0; i < this._data.length; i++)
+      {
+        this._data[i] = value;
+      }
   }
 
-  neighbours({ row, col }) {
-    // TODO: return list of neighbour {row, col} objects
+  neighbours({ row, col }) 
+  {
+    const coordinates = [];
+    if (this.indexFor({row: row - 1, col: col}) !== undefined)
+      {
+        coordinates.push({row: row - 1, col: col});
+      }
+    if (this.indexFor({row: row, col: col - 1}) !== undefined)
+      {
+        coordinates.push({row: row, col: col - 1});
+      }
+    if (this.indexFor({row: row, col: col + 1}) !== undefined)
+      {
+        coordinates.push({row: row, col: col + 1});
+      }
+    if (this.indexFor({row: row + 1, col: col}) !== undefined)
+      {
+        coordinates.push({row: row + 1, col: col});
+      }
+
+    return coordinates;
   }
 
-  neighbourValues({ row, col }) {
-    // TODO: return list of neighbour values
+  neighbourValues({ row, col }) 
+  {
+    const values = [];
+    if (this.north({row, col}) !== undefined)
+      {
+        values.push(this.north({row, col}));
+      }
+    if (this.west({row, col}) !== undefined)
+      {
+        values.push(this.west({row, col}));
+      }
+    if (this.east({row, col}) !== undefined)
+      {
+        values.push(this.east({row, col}));
+      }
+    if (this.south({row, col}) !== undefined)
+      {
+        values.push(this.south({row, col}));
+      }
+
+    return values;
   }
 
-  nextInRow({ row, col }) {
-    // TODO: return cell to the right or undefined
+  nextInRow({ row, col }) 
+  {
+    return this.east({row, col});
   }
 
-  nextInCol({ row, col }) {
-    // TODO: return cell below or undefined
+  nextInCol({ row, col }) 
+  {
+    return this.south({row, col});
   }
 
-  north({ row, col }) {
-    // TODO: return cell above or undefined
+  north({ row, col }) 
+  {
+    return this.get({row: row - 1, col});
   }
 
-  south({ row, col }) {
-    // TODO: return cell below or undefined
+  south({ row, col }) 
+  {
+    return this.get({row: row + 1, col});
   }
 
-  west({ row, col }) {
-    // TODO: return cell to the left or undefined
+  west({ row, col }) 
+  {
+    return this.get({row, col: col - 1});
   }
 
-  east({ row, col }) {
-    // TODO: return cell to the right or undefined
+  east({ row, col }) 
+  {
+    return this.get({row, col: col + 1});
   }
 }
 
